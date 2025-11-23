@@ -1,16 +1,22 @@
-# app-dotnet
+Aqui está a **documentação revisada, corrigida, organizada e padronizada**, mantendo o mesmo conteúdo, mas com estrutura mais clara, sem erros e com melhor formatação.
 
-Criando uma aplicação utilizando dot.net
+---
+
+# 🚀 app-dotnet
+
+Criando uma aplicação utilizando **.NET** com **Minimal API**, **Healthcheck** e execução básica.
+
+---
 
 # ✅ 1. Instalar o .NET SDK
 
-## 🟦 **Windows**
+## 🟦 Windows
 
 Baixe e instale o SDK no site oficial:
 
 ➡️ [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
 
-Depois de instalar, feche e abra o terminal novamente e teste:
+Depois de instalar, reinicie o terminal e teste:
 
 ```bash
 dotnet --version
@@ -18,7 +24,7 @@ dotnet --version
 
 ---
 
-## 🟩 **Linux (Ubuntu/Debian)**
+## 🟩 Linux (Ubuntu/Debian)
 
 ```bash
 sudo apt update
@@ -33,7 +39,7 @@ dotnet --version
 
 ---
 
-## 🟧 **macOS (Intel ou M1/M2/M3)**
+## 🟧 macOS (Intel ou M1/M2/M3)
 
 Via Homebrew:
 
@@ -41,7 +47,7 @@ Via Homebrew:
 brew install --cask dotnet-sdk
 ```
 
-Depois adicione ao PATH (se necessário):
+Adicione ao PATH caso necessário:
 
 ```bash
 export PATH="$PATH:/usr/local/share/dotnet"
@@ -55,8 +61,7 @@ dotnet --version
 
 ---
 
-
-## ✅ 1. Criar o projeto
+# ✅ 2. Criar o projeto
 
 No terminal:
 
@@ -65,11 +70,11 @@ dotnet new webapi -n MeuProjeto
 cd MeuProjeto
 ```
 
-Esse template já suporta Minimal APIs.
+Esse template já suporta **Minimal APIs**.
 
 ---
 
-## ✅ 2. Adicionar Health Checks
+# ✅ 3. Adicionar Health Checks
 
 No `Program.cs`, adicione:
 
@@ -90,7 +95,7 @@ app.Run();
 Isso cria o endpoint:
 
 ```
-GET /healthhealthcheck
+GET /healthcheck
 ```
 
 Retorno padrão:
@@ -100,58 +105,63 @@ Retorno padrão:
 
 ---
 
-## 🔍 Teste
+# 🔍 4. Testar a aplicação
 
-Para Buildar
-
-Rode:
+## 👉 Build
 
 ```bash
 dotnet build
+```
 
-MSBuild version 17.8.43+f0cbb1397 for .NET
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  workon -> /home/rfahham/projetos/app-dotnet/workon/bin/Debug/net8.0/workon.dll
+Exemplo de saída:
 
+```
 Build succeeded.
     0 Warning(s)
     0 Error(s)
-
-Time Elapsed 00:00:01.57
 ```
 
-Para executar:
+---
+
+## 👉 Executar
 
 ```bash
 dotnet run
-
-Building...
-info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5251
-info: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-info: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-info: Microsoft.Hosting.Lifetime[0]
-      Content root path: /home/rfahham/projetos/app-dotnet/workon
-
 ```
 
-Acesse:
+Saída típica:
 
 ```
-E teste no navegador:
+Now listening on: http://localhost:5251
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+```
 
+---
+
+# 🔗 5. Acessar endpoints
+
+Abra no navegador:
+
+### Healthcheck
+
+```
 http://localhost:5251/healthcheck
- → deve retornar Healthy
+```
 
+### WeatherForecast (template gerado)
+
+```
 http://localhost:5251/weatherforecast
+```
 
+### Swagger
+
+```
 http://localhost:5251/swagger
 ```
 
-Você verá algo assim:
+Retorno típico do healthcheck:
 
 ```
 Healthy
@@ -159,9 +169,9 @@ Healthy
 
 ---
 
-## ⭐ Exemplo com verificações extras (opcional)
+# ⭐ Exemplo com verificações extras (opcional)
 
-Se quiser já incluir checks de banco, por exemplo:
+Se quiser adicionar, por exemplo, SQL Server:
 
 ```csharp
 builder.Services.AddHealthChecks()
@@ -170,34 +180,23 @@ builder.Services.AddHealthChecks()
 
 ---
 
+# 🧩 Healthcheck customizado (retornar “WORKING”)
 
-* Dockerfile
-* Documentação Swagger
-* Um projeto completo com healthcheck + banco?
-
-
-
-### Healthcheck customizado?
-
-# ✅ **1. Instalar o pacote necessário (caso ainda não tenha)**
-
-No terminal, dentro do seu projeto:
-
-```bash
-dotnet add package AspNetCore.HealthChecks.UI.Client
-```
-
-Ou, caso use .NET 8/9 (Minimal API), normalmente só precisa de:
+## 1. Instalar o pacote necessário (se ainda não tiver)
 
 ```bash
 dotnet add package Microsoft.AspNetCore.Diagnostics.HealthChecks
 ```
 
+Ou, se for usar UI:
+
+```bash
+dotnet add package AspNetCore.HealthChecks.UI.Client
+```
+
 ---
 
-# ✅ **2. Adicionar os `using` no topo do Program.cs**
-
-No topo do arquivo, coloque:
+## 2. Adicionar os `using` no topo do Program.cs
 
 ```csharp
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -206,42 +205,48 @@ using System.Text.Json;
 
 ---
 
-# ✅ **3. Código completo para retornar “WORKING”**
-
-Use isto no Program.cs:
+## 3. Criar um healthcheck personalizado
 
 ```csharp
 app.MapHealthChecks("/healthcheck", new HealthCheckOptions
 {
     ResponseWriter = async (context, report) =>
     {
-        context.Response.ContentType = "text/plain";
+        context.Response.ContentType = "text/plain; charset=utf-8";
         await context.Response.WriteAsync("WORKING");
     }
 });
 ```
 
-👉 Isso retorna **apenas o texto WORKING**, sem JSON.
+👉 Retorna apenas:
+
+```
+WORKING
+```
 
 ---
 
-# 🔄 Agora rode novamente:
+# 🔄 Executar novamente
 
 ```bash
 dotnet build
 dotnet run
 ```
 
-E abra:
+Acesse:
 
 ```
 http://localhost:5251/healthcheck
 ```
 
-Você deve ver:
+---
+
+# 🎉 Resultado esperado
 
 ```
 WORKING
 ```
+
+---
 
 
